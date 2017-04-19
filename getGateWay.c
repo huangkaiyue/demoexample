@@ -7,16 +7,14 @@
  
 #define BUFSIZE 8192
  
-struct route_info
-{
+struct route_info{
     u_int dstAddr;
     u_int srcAddr;
     u_int gateWay;
     char ifName[IF_NAMESIZE];
 };
  
-int readNlSock(int sockFd, char *bufPtr, int seqNum, int pId)
-{
+static int readNlSock(int sockFd, char *bufPtr, int seqNum, int pId){
     struct nlmsghdr *nlHdr;
     int readLen = 0, msgLen = 0;
     do{
@@ -51,8 +49,7 @@ int readNlSock(int sockFd, char *bufPtr, int seqNum, int pId)
 }
  
 //分析返回的路由信息
-void parseRoutes(struct nlmsghdr *nlHdr, struct route_info *rtInfo,char *gateway, char *ifName)
-{
+void parseRoutes(struct nlmsghdr *nlHdr, struct route_info *rtInfo,char *gateway, char *ifName){
     struct rtmsg *rtMsg;
     struct rtattr *rtAttr;
     int rtLen;
@@ -102,8 +99,7 @@ void parseRoutes(struct nlmsghdr *nlHdr, struct route_info *rtInfo,char *gateway
     return;
 }
  
-int get_gateway(char *gateway, char *ifName)
-{
+int get_gateway(char *gateway, char *ifName){
     struct nlmsghdr *nlMsg;
     struct rtmsg *rtMsg;
     struct route_info *rtInfo;
@@ -153,7 +149,7 @@ int get_gateway(char *gateway, char *ifName)
  
 int main(void)
 {
-    char buff[256], ifName[12];
+    char buff[256]={0}, ifName[12]={0};
     get_gateway(buff, ifName);
     printf("interface:%s\ngetway: %s\n",ifName, buff);
     return 0;
